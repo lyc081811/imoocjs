@@ -1,32 +1,17 @@
-const path = require('path');
 module.exports = {
   entry: {
-    app: './app/js/main.js'
+    app: './app.js'
   },
-  devServer: {
-    contentBase: path.join(__dirname, "dist"),
-    compress: true,
-    port: 9000
-  }
+  output: {
+    filename: '[name].[hash:5].js'
+  },
   module: {
-    loaders: [
+    rules: [
       {
-        test: /\.html$/,
-        loader: 'html-loader'
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      },
-      {
-        test: /\.scss$/,
-        loader: 'style-loader!css-loader!scss-loader'
+        test: /\.js$/,
+        use: 'babel-loader',
+        exclude: '/node_modules/'
       }
     ]
-  },
-  plugins: {},
-  output: {
-    filename: '[name].min.js',
-    path: path.resolve(__dirname, 'dist')
   }
 }
