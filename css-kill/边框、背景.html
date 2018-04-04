@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>边框、背景</title>
+  <style media="screen">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .main {
+      width: 200px;
+      height: 200px;
+      background-color: #e60000;
+      padding: 20px;
+      border: 10px dotted rgba(0,0,0,.5);/* 背景会在边框的下层，可能不是想要的 */
+      background-clip: padding-box;
+      /*  border-box：(默认)背景被裁剪到边框盒。（默认）
+          padding-box：背景被裁剪到内边距框。
+          content-box：背景被裁剪到内容框。 */
+    }
+    .border {
+      width: 50px;
+      height: 50px;
+      margin: 0 auto;
+      border-radius: 50%;
+      box-shadow: 0 0 0 10px #655, 0 0 0 15px #e60000, 0 0 0 2px yellow inset;// 可以搞一下多层边框
+    }
+    .border2 {
+      width: 50px;
+      height: 50px;
+      margin: 10px auto;
+      border-radius: 50%;
+      border: 2px solid #333;
+      outline: 2px dotted #f23;
+    }
+  </style>
+</head>
+<body>
+  <div class="main"></div>
+  <div class="border"></div>
+  <div class="border2"></div>
+</body>
+</html>

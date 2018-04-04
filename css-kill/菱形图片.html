@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style media="screen">
+    .pic {
+      width: 400px;
+      overflow: hidden;
+      margin: 20px;
+      transform: rotate(45deg);
+    }
+    .pic>img{
+      max-width: 100%;
+      transform: rotate(-45deg) scale(1.42);
+    }
+    .clipPath {
+      clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+      transform: 1s clip-path;
+    }
+    .clipPath:hover {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="pic"><img src="https://upload-images.jianshu.io/upload_images/195046-40644337a1f9ceac.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240" alt=""></div>
+
+  <img class="clipPath" src="https://upload-images.jianshu.io/upload_images/195046-40644337a1f9ceac.jpg?imageMogr2/auto-orient/strip|imageView2/1/w/300/h/240" alt="">
+</body>
+</html>
