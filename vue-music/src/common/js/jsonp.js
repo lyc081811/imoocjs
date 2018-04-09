@@ -16,7 +16,7 @@ function param(data) {
   let url = ''
   for (let i in data) {
     let value = data[i] !== undefined ? data[i] : ''
-    url += `${i}=${encodeURIComponent(value)}`
+    url += '&' + i + '=' + encodeURIComponent(value)
   }
   return url ? url.substring(1) : ''
 }
