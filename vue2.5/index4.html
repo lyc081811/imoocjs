@@ -10,7 +10,7 @@
 		<button @click="btnClick">提交</button>
 		<ul>
             <!-- <li v-for="item in list" :key="item">{{item}}</li> -->
-            <todo-item v-for="item in list" :item="item"></todo-item>
+            <todo-item2 v-for="(item,index) in list" :index="index" :item="item" @delete="handleDelete"></todo-item2>
 		</ul>
 	</div>
 	<script src="vue.js"></script>
@@ -20,8 +20,21 @@
             props: ['item'],
             template: '<li>{{this.item}}</li>'
         })
+		// 局部组件
+		var TodoItem2 = {
+			props: ['item','index'],
+			template: '<li @click="handleClick">{{this.item}}</li>',
+			methods: {
+				handleClick: function(){
+					this.$emit('delete',this.index)
+				}
+			}
+		}
 		var app = new Vue({
 			el: '#app',
+			components: {
+				TodoItem2
+			},
 			data: {
 				list: [],
 				value: ''
@@ -30,6 +43,10 @@
 				btnClick: function(){
 					this.list.push(this.value);
 					this.value = '';
+				},
+				handleDelete: function(index){
+					// alert(index);
+					this.list.splice(index, 1);
 				}
 			}
 		})
