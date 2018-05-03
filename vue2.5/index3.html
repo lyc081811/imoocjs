@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+		<input id="input" type="text">
+		<button @click="btnClick" id="btn">提交</button>
+		<ul id="list"></ul>
+    </div>
+    <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+        function Page() {
+
+        }
+        $.extend(Page.prototype, {
+            init: function(){
+                this.bindEvents()
+            },
+            bindEvents: function(){
+                var btn = $('#btn');
+                btn.on('click', $.proxy(this.handleBtnClick, this))
+            },
+            handleBtnClick: function(){
+                var ipt = $('input');
+                var ulEle = $('#list');
+                ulEle.append('<li>' + ipt.val() + '</li>');
+                ipt.val(''); 
+            }
+        })
+        var page = new Page();
+        page.init();
+    </script>
+</body>
+</html>
