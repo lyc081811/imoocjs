@@ -6,17 +6,26 @@
 </head>
 <body>
 	<div id="app">
-		{{msg}}
+		{{fullname}}
 	</div>
 	<script src="vue.js"></script>
 	<script>
 		var app = new Vue({
 			el: '#app',
 			data: {
-				msg: 'hello world'
+				firstName: 'dell',
+				lastName: 'lee'
 			},
-			methods: {
-				
+			computed: {
+				fullname: {
+					// return this.firstName + ' ' + this.lastName;
+					get: function(){
+						return this.firstName + ' ' + this.lastName
+					},
+					set: function(value){
+						console.log(value)
+					}
+				}
 			}
 		})
 	</script>
