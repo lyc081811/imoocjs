@@ -7,13 +7,17 @@
 <body>
 	<div id="app">
 		{{msg}}
+		<template v-for="(i,index) of list">
+			<p>{{i}}</p><span>{{index}}</span>
+		</template>
 	</div>
 	<script src="vue.js"></script>
 	<script>
 		var app = new Vue({
 			el: '#app',
 			data: {
-				msg: 'hello world'
+				msg: 'hello world',
+				list: ['1','2','3']
 			},
 			methods: {
 				
