@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>非父子组件传值（发布订阅模式）</title>
+</head>
+
+<body>
+    <div id="app">
+        <child content="hello"></child>
+        <child content="world"></child>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        Vue.prototype.bus = new Vue()
+        Vue.component('child', {
+            props: {
+                content: String
+            },
+            data: function(){
+                return {
+                    selfCount: this.content
+                }
+            },
+            template: '<div @click="childClick">{{selfCount}}</div>',
+            methods: {
+                childClick: function(){
+                    this.bus.$emit('change', this.selfCount)
+                }
+            },
+            mounted: function(){
+                var   _this = this;
+                this.bus.$on('change', function(content){
+                    _this.selfCount = content;
+                    console.log(content)
+                })
+            }
+        })
+        var app = new Vue({
+            el: '#app',
+            methods: {
+                
+            }          
+        })
+    </script>
+</body>
+
+</html>

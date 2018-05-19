@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue-js</title>
+    <style>
+        .v-enter, .v-leave-to {
+            opacity: 0;
+        }
+        .v-enter-active, .v-leave-active {
+            transition: opacity 1s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+            <transition-group tag="ul">
+                <li v-for="item of list" :key="item.id">{{item.text}}</li>            
+            </transition-group>
+        <button @click="add">add</button>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+       let num = 0;
+        var app = new Vue({
+            el: '#app',
+            data: {               
+                list: []               
+            },
+            methods: {
+                add: function () {
+                    this.list.push({
+                        id: ++num,
+                        text: `我是第个`
+                    })
+                }
+            }
+        })
+    </script>
+</body>
+</html>

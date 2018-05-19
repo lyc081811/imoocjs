@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <table>
+            <tbody>
+                <!-- 规范：tbody李必须是tr,所以有时候会又问题,可以使用is解决 -->
+                <!-- <row></row> -->
+
+                <tr is="row" :msg="msg"></tr>
+                <tr is="row"></tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('row', {
+            props: ['msg'],
+            data: function(){
+                return {
+                    msg2: '这是一个demo'
+                }
+            },
+            template: '<tr><td>{{msg}}-{{msg2}}</td></tr>'
+        })
+        var app = new Vue({
+            el: '#app',
+            data: function(){
+                return {
+                    msg: 'this is data'
+                }
+            }          
+        })
+    </script>
+</body>
+
+</html>

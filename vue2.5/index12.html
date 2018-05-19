@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue插槽</title>
+</head>
+
+<body>
+    <div id="app">
+        <child>
+            <p>我是一个slot</p>
+        </child>
+        <include>
+            <div class="header" slot="header">header</div>
+            <div class="footer" slot="footer">footer</div>
+        </include>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('child', {     
+            template: '<div><slot>默认内容</slot></div>'
+        })
+        Vue.component('include', {     
+            template: `
+                <div>
+                    <slot name="header"></slot>
+                    <div class="content">content</div>
+                    <slot name="footer"></slot>
+                </div>
+            `
+        })
+        var app = new Vue({
+            el: '#app',
+            methods: {
+                
+            }          
+        })
+    </script>
+</body>
+
+</html>

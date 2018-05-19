@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>组件的参数校验于非props特性</title>
+</head>
+
+<body>
+    <div id="app">
+        <child content="123" @click.native="handleClick"></child>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('child', {
+            props: {
+                content: {
+                    type: String,
+                    required: true,
+                    // validator: function(){
+                    //     return (value.length > 5)
+                    // }
+                }
+            },
+            template: '<div>{{content}}</div>'
+        })
+        var app = new Vue({
+            el: '#app',
+            methods: {
+                handleClick: function(){
+                    alert(1);
+                }
+            }          
+        })
+    </script>
+</body>
+
+</html>

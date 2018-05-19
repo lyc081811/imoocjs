@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue动态组件</title>
+</head>
+
+<body>
+    <div id="app">
+        <!-- <child>
+            <p>我是一个slot</p>
+        </child>
+        <include>
+            <div class="header" slot="header">header</div>
+            <div class="footer" slot="footer">footer</div>
+        </include> -->
+        <component :is="type"></component>
+        <button @click="changeComponent">change</button>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        // v-once 组件创建一次就会保存在内存，提高了效率
+        Vue.component('child', {     
+            template: '<div v-once><slot>默认内容</slot></div>'
+        })
+        Vue.component('include', {     
+            template: `
+                <div v-once>
+                    <slot name="header"></slot>
+                    <div class="content">content</div>
+                    <slot name="footer"></slot>
+                </div>
+            `
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                type: 'child'
+            },
+            methods: {
+                changeComponent: function(){
+                    this.type = this.type==='child'? 'include': 'child'
+                }
+            }          
+        })
+    </script>
+</body>
+
+</html>

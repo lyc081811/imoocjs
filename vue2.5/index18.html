@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue-js动画velocity.js</title>
+    <style>
+        .v-enter, .v-leave-to {
+            opacity: 0;
+        }
+        .v-enter-active, .v-leave-active {
+            transition: opacity 3s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <transition mode="out-in">
+            <!-- <div v-if="show" key="hello">hello</div>
+            <div v-else key="bye">world</div> -->
+
+            <!-- <child v-if="show"></child>
+            <child2 v-else></child2> -->
+
+            <component :is="componentId"></component>
+        </transition>
+        <button @click="changeComponent">change</button>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        Vue.component('child', {
+            template: '<div>child</div>'
+        })
+        Vue.component('child2', {
+            template: '<div>child2</div>'
+        })
+        var app = new Vue({
+            el: '#app',
+            data: {
+                show: true,
+                componentId: 'child'
+            },
+            methods: {
+                changeComponent: function () {
+                    // this.show = !this.show
+
+                    this.componentId = this.componentId === 'child'? 'child2': 'child'
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

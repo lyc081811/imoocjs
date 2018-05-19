@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue-js动画velocity.js</title>
+    <script src="./velocity.min.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <transition name="fade"
+        @before-enter="handleBefore"
+        @enter="handleEnter"
+        @after-enter="handleAfter"
+        >
+            <div v-if="show">hello</div>
+        </transition>
+        <button @click="changeComponent">change</button>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                show: true
+            },
+            methods: {
+                changeComponent: function () {
+                    this.show = !this.show
+                },
+                // 进入之前
+                handleBefore: function(el){
+                   el.style.opacity = 0
+                },
+                //  进入后
+                handleEnter: function(el,done){
+                    Velocity(el,{opacity:1},{duration: 1000, complete: done})
+                },
+                // 进入后若done()运行后
+                handleAfter: function(el){
+                    console.log('结束')
+                }
+                // leave动画的名字before-leave leave after-leave
+            }
+        })
+    </script>
+</body>
+
+</html>

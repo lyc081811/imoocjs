@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>vue-css动画</title>
+    <link rel="stylesheet" href="./animate.css">
+    <style>
+        .fade-enter-active {
+            transition: opacity 1s; 
+        }
+        .fade-leave-active {
+            transition: opacity 3s;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <transition name="fade">
+            <div v-if="show">hello</div>
+        </transition>
+        <button @click="changeComponent">change</button>
+
+        <hr>
+        <transition name="fade2" appear
+            enter-active-class="animated swing" 
+            leave-active-class="animated shake"
+            appear-active-class="animated swing"
+        >
+            <div v-if="show">hello</div>
+        </transition>
+        <button @click="changeComponent">change</button>
+    </div>
+    <script src="vue.js"></script>
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                show: true
+            },
+            methods: {
+                changeComponent: function () {
+                    this.show = !this.show
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
