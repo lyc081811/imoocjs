@@ -2,8 +2,8 @@
   <div>
     <div class="title">热销推荐</div>
     <ul>
-      <li class="item" v-for="item of recommendList" :key="item.id">
-        <img class="item-img" :src="item.img" alt="">
+      <li class="item" v-for="item of list" :key="item.id">
+        <img class="item-img" :src="item.imgUrl" alt="">
         <div class="item-info">
           <p class="item-title">{{item.title}}</p>
           <div class="item-comment">
@@ -22,18 +22,8 @@
 <script>
 export default {
   name: 'HomeRecommend',
-  data () {
-    return {
-      recommendList: [
-        {
-          id: '01',
-          img: 'http://img1.qunarzz.com/sight/201405/27/4e1c7943ceb94759c8d65eac.jpg_150x150_1b5d04b2.jpg',
-          title: '青岛东方影都万达乐园',
-          price: '192',
-          address: '黄岛区'
-        }
-      ]
-    }
+  props: {
+    list: Array
   }
 }
 </script>

@@ -3,8 +3,8 @@
     <swiper :options="swiperOption">
       <swiper-slide v-for="(page, index) of pages" :key="index">
         <div class="icon" v-for="item of page" :key="item.id">
-          <div class="icon-img"><img :src="item.url" alt=""></div>
-          <p class="icon-desc">{{item.txt}}</p>
+          <div class="icon-img"><img :src="item.imgUrl" alt=""></div>
+          <p class="icon-desc">{{item.desc}}</p>
         </div>
       </swiper-slide>
       <div class="swiper-pagination"  slot="pagination"></div>
@@ -14,69 +14,21 @@
 <script>
 export default {
   name: 'Icons',
+  props: {
+    list: Array
+  },
   data () {
     return {
       swiperOption: {
-        pagination: '.swiper-pagination'
-      },
-      swiperIconsList: [
-        {
-          id: '01',
-          url: 'http://img1.qunarzz.com/piao/fusion/1803/95/f3dd6c383aeb3b02.png',
-          txt: '景点门票'
-        },
-        {
-          id: '02',
-          url: 'http://img1.qunarzz.com/piao/fusion/1804/ff/fdf170ee89594b02.png',
-          txt: '必游榜单'
-        },
-        {
-          id: '03',
-          url: 'http://img1.qunarzz.com/piao/fusion/1803/96/c70f1e85ae4a4f02.png',
-          txt: '自然风光'
-        },
-        {
-          id: '04',
-          url: 'http://img1.qunarzz.com/piao/fusion/1804/5a/13ceb38dcf262f02.png',
-          txt: '一日游'
-        },
-        {
-          id: '05',
-          url: 'http://img1.qunarzz.com/piao/fusion/1803/bd/9f7b9b2b60c1502.png',
-          txt: '踏青赏花'
-        },
-        {
-          id: '06',
-          url: 'http://img1.qunarzz.com/piao/fusion/1803/95/8246f27355943202.png',
-          txt: '游乐场'
-        },
-        {
-          id: '07',
-          url: 'http://img1.qunarzz.com/piao/fusion/1803/20/831d62d2e1c7be02.png',
-          txt: '名胜古迹'
-        },
-        {
-          id: '08',
-          url: 'http://img1.qunarzz.com/piao/fusion/1803/20/831d62d2e1c7be02.png',
-          txt: '趵突泉'
-        },
-        {
-          id: '09',
-          url: 'http://img1.qunarzz.com/piao/fusion/1803/47/c2b659e048b11602.png',
-          txt: '济南动物园'
-        },
-        {
-          id: '10',
-          url: 'http://img1.qunarzz.com/piao/fusion/1803/80/416c6ab3368d1f02.png',
-          txt: '全部玩乐'
-        }
-      ]
+        pagination: '.swiper-pagination',
+        autoplay: false
+      }
     }
   },
   computed: {
     pages () {
       const pages = []
-      this.swiperIconsList.forEach((x, index) => {
+      this.list.forEach((x, index) => {
         const page = Math.floor(index / 8)
         if (!pages[page]) {
           pages[page] = []
