@@ -20,8 +20,7 @@ export default {
   data () {
     return {
       swiperOption: {
-        pagination: '.swiper-pagination',
-        autoplay: false
+        pagination: '.swiper-pagination'
       }
     }
   },
