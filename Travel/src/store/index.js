@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import mutations from './mutations'
+// import mutations from './mutations'
 Vue.use(Vuex)
 // let defaultCity = '济南'
 // try {
@@ -11,7 +11,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    city: localStorage.city || '济南'
+    city: localStorage.city || '禹城'
   },
   // 可以直接在页面方法调用mutations
   // actions: {
@@ -19,5 +19,12 @@ export default new Vuex.Store({
   //     ctx.commit('changeCity', city)
   //   }
   // },
-  mutations
+  mutations: {
+    changeCity (state, city) {
+      state.city = city
+      try {
+        localStorage.city = city
+      } catch (e) {}
+    }
+  }
 })

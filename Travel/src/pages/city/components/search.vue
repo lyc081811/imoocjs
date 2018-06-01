@@ -69,9 +69,10 @@ export default {
   height 0.72rem
   padding 0 .1rem
   background $bgColor
+  position relative
+  z-index 2
   .serach-input
     position relative
-    z-index 1
     box-sizing border-box
     width 100%
     height .62rem
@@ -86,7 +87,7 @@ export default {
   width 100%
   bottom 0
   background #ccc
-  z-index 2
+  z-index 1
   .search-item
     line-height .62rem
     padding-left .2rem
