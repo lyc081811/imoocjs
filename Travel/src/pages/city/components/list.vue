@@ -5,22 +5,22 @@
         <div class="title border-topbottom">当前城市</div>
         <div class="button-list">
           <div class="button-wrapper">
-            <div class="button">北京</div>
+            <div class="button">{{this.$store.state.city}}</div>
           </div>
         </div>
       </div>
       <div class="area">
         <div class="title">热门城市</div>
         <div class="button-list">
-          <div class="button-wrapper" v-for="item of hot" :key="item.id">
+          <div class="button-wrapper" v-for="item of hot" :key="item.id" @click="handleClick(item.name)">
             <div class="button">{{item.name}}</div>
           </div>
         </div>
       </div>
-      <div class="area" v-for="(item, key) of cities" :key="key" ref="key">
+      <div class="area" v-for="(item, key) of cities" :key="key" :ref="key">
         <div class="title border-topbottom">{{key}}</div>
         <div class="item-list">
-          <div class="item border-bottom" v-for="list of item" :key="list.id">
+          <div class="item border-bottom" v-for="list of item" :key="list.id" @click="handleClick(list.name)">
             {{list.name}}
           </div>
         </div>
@@ -35,16 +35,21 @@ export default {
   props: {
     hot: Array,
     cities: Object,
-    letter: String,
-    index: Number
+    letter: String
   },
   mounted () {
     this.scroll = new BScroll(this.$refs.wrapper)
   },
+  methods: {
+    handleClick (city) {
+      this.$store.commit('changeCity', city)
+      this.$router.push('/')
+    }
+  },
   watch: {
     letter () {
       if (this.letter) {
-        this.scroll.scrollToElement(this.$refs.key[this.index])
+        this.scroll.scrollToElement(this.$refs[this.letter][0])
       }
     }
   }

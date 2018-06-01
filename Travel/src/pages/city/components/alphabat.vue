@@ -1,6 +1,6 @@
 <template>
   <ul class="list">
-    <li class="item" v-for="(item, key, index) of cities" :key="key" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @click="handleClick" :data-index="index">{{key}}</li>
+    <li class="item" v-for="item of letters" :key="item" :ref="item" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd" @click="handleClick">{{item}}</li>
   </ul>
 </template>
 <script>
@@ -11,27 +11,47 @@ export default {
   },
   data () {
     return {
-      touchStatus: false
+      touchStatus: false,
+      startY: 0,
+      timer: null
+    }
+  },
+  updated () {
+    this.startY = this.$refs['A'][0].offsetTop
+  },
+  computed: {
+    letters () {
+      const letters = []
+      for (let i in this.cities) {
+        letters.push(i)
+      }
+      return letters
     }
   },
   methods: {
     handleClick (e) {
-      this.$emit('change', [e.target.innerText, e.target.dataset.index])
+      this.$emit('change', e.target.innerText)
     },
     handleTouchStart () {
-      console.log(1)
       this.touchStatus = true
     },
     handleTouchMove (e) {
-      console.log(1.5)
       if (this.touchStatus) {
-        console.log(e.target.dataset.index)
-        this.$emit('change', [e.target.innerText, e.target.dataset.index])
+        if (this.timer) {
+          clearTimeout(this.timer)
+        }
+        this.timer = setTimeout(() => {
+          const startY = this.startY
+          const touchY = e.touches[0].clientY - 79
+          const index = Math.floor((touchY - startY) / 20)
+          if (index >= 0 && index < this.letters.length) {
+            this.$emit('change', this.letters[index])
+          }
+        }, 16)
       }
     },
     handleTouchEnd () {
       this.touchStatus = false
-      console.log(2)
     }
   }
 }

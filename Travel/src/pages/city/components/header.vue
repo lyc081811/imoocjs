@@ -14,6 +14,7 @@ export default {
 @import '~styles/varibles.styl'
 .header
   position relative
+  z-index 1
   height: $headerHeight;
   line-height: $headerHeight;
   text-align: center;
