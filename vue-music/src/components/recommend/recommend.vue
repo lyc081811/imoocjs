@@ -1,27 +1,53 @@
 <template>
   <div class="recommend">
-    <scroll ref="scroll" class="recommend-content" :data="discList">
+    <div ref="scroll" class="recommend-content">
       <div>
-        <div v-if="recommends.length" class="slider-wrapper" ref="sliderWrapper">
-
-        </div>
-        <div class="recommend-list">
-          <h1 class="list-title">热门歌单推荐</h1>
-          
-        </div>
+        <swiper :options="swiperOption" ref="mySwiper">
+          <swiper-slide v-for="item of recommends" :key="item.id">
+            <a :href="item.linkUrl">
+              <img class="swiper-img" :src="item.picUrl" alt="">
+            </a>
+          </swiper-slide>
+          <div class="swiper-pagination"  slot="pagination"></div>
+        </swiper>
       </div>
-      <div class="loading-container" v-show="!discList.length">
-        <loading></loading>
-      </div>
-    </scroll>
+    </div>
   </div>
 </template>
 <script>
+import { getRecommend } from 'api/recommend'
+import { ERR_OK } from 'api/config'
 export default {
+  name: 'Recommend',
+  data () {
+    return {
+      recommends: [],
+      swiperOption: {
+        pagination: '.swiper-pagination',
+        loop: true,
+        autoplay: 5000
+      }
+    }
+  },
+  created () {
+    this._getRecommend()
+  },
+  methods: {
+    _getRecommend () {
+      getRecommend().then(res => {
+        if (res.code === ERR_OK) {
+          console.log(res.data.slider)
+          this.recommends = res.data.slider
+        }
+      })
+    }
+  }
 }
 </script>
 <style lang="stylus" scoped>
 @import "~common/stylus/variable"
+.recommend >>> .swiper-img
+  width 100%
 .recommend
   position: fixed
   width: 100%
