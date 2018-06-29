@@ -34,7 +34,6 @@ export default {
   methods: {
     showGallaryClick () {
       this.showGallary = true
-      console.log(this.gallaryImgs)
     },
     closeSwiper () {
       this.showGallary = false

@@ -11,11 +11,15 @@
           <div class="swiper-pagination"  slot="pagination"></div>
         </swiper>
       </div>
+      <div class="recommend-list">
+        <h1 class="list-title">热门歌单推荐</h1>
+        <ul></ul>
+      </div>
     </div>
   </div>
 </template>
 <script>
-import { getRecommend } from 'api/recommend'
+import { getRecommend, getDiscList } from 'api/recommend'
 import { ERR_OK } from 'api/config'
 export default {
   name: 'Recommend',
@@ -25,20 +29,27 @@ export default {
       swiperOption: {
         pagination: '.swiper-pagination',
         loop: true,
-        autoplay: 5000
+        autoplay: 5000,
+        slidesPerView: 'auto',
+        loopedSlides: 8
       }
     }
   },
   created () {
     this._getRecommend()
+    this._getDscList()
   },
   methods: {
     _getRecommend () {
       getRecommend().then(res => {
         if (res.code === ERR_OK) {
-          console.log(res.data.slider)
           this.recommends = res.data.slider
         }
+      })
+    },
+    _getDscList () {
+      getDiscList().then(res => {
+        console.log(res)
       })
     }
   }
