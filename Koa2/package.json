@@ -4,12 +4,16 @@
   "description": "",
   "main": "cb-promise.js",
   "scripts": {
+    "dev": "nodemon -w src --exec \"babel-node src --preset env\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
     "co": "^4.6.0",
-    "node-fetch": "^2.1.2"
+    "node-fetch": "^2.1.2",
+    "nodemon": "^1.17.5"
   }
 }
