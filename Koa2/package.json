@@ -4,7 +4,7 @@
   "description": "",
   "main": "cb-promise.js",
   "scripts": {
-    "dev": "nodemon -w src --exec \"babel-node src --preset env\"",
+    "dev": "nodemon -w src --exec \"babel-node src --presets env\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -15,5 +15,9 @@
     "co": "^4.6.0",
     "node-fetch": "^2.1.2",
     "nodemon": "^1.17.5"
+  },
+  "dependencies": {
+    "koa": "^2.5.1",
+    "koa-session": "^5.8.1"
   }
 }
