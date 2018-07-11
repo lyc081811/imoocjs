@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "koa": "^2.5.1",
+    "koa-router": "^7.4.0",
     "koa-session": "^5.8.1"
   }
 }
