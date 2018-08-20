@@ -1,8 +1,11 @@
 // 工具函数库
 import config from './config'
-export function get (url) {
+
+function requst (url, method, data) {
   return new Promise((resolve, reject) => {
     wx.request({
+      data,
+      method,
       url: config.host + url,
       success: function (res) {
         if (res.data.code === 0) {
@@ -17,11 +20,26 @@ export function get (url) {
     })
   })
 }
+// get获取数据
+export function get (url, data) {
+  requst(url, 'GET', data)
+}
+// post请求数据
+export function post (url, data) {
+  requst(url, 'POST', data)
+}
 
-export function showSucess (text) {
+export function showSuccess (text) {
   wx.showToast({
     title: text,
     icon: 'sucess',
+    mask: true
+  })
+}
+export function showError (text) {
+  wx.showToast({
+    title: text,
+    icon: 'error',
     mask: true
   })
 }

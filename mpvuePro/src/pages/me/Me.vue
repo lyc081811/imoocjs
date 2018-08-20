@@ -1,56 +1,78 @@
 <template>
   <div class="container">
+    <button @click="login">点击登录</button>
     <div class="userinfo">
-      <!-- <img :src="userInfo.avatarUrl" alt="暂无头像"> -->
-      <button open-type="getUserInfo" v-if="canIUse" bindgetuserinfo="bindGetUserInfo">获取信息</button>
-      <p v-else>{{userInfo.nickName}}</p>
+      <img :src="userInfo.avatarUrl" alt="">
+      <p>{{userInfo.nickName}}</p>
     </div>
-    <progress :percent="percent" show-info activeColor="#e60000"/>
-    <p>{{year}}年已经过去{{days}}天了</p>
-    <button class="btn" @click="scanBook">添加图书</button>
+    <year-progress></year-progress>
+    <button @click="scanCode">添加图书</button>
   </div>
 </template>
 <script>
-// import qcloud from 'wafer2-client-sdk'
-// import config from '../../config'
-// import YearProgress from '../components/yearProgress'
+import YearProgress from '../components/yearProgress'
+import {showSuccess, post} from '../../util'
+import qcloud from 'wafer2-client-sdk'
+import config from '../../config'
 export default {
+  components: {
+    YearProgress
+  },
   data () {
     return {
-      canIUse: wx.canIUse('button.open-type.getUserInfo')
-    }
-  },
-  computed: {
-    year () {
-      return new Date().getFullYear()
-    },
-    days () {
-      let start = new Date()
-      start.setMonth(0)
-      start.setDate(1)
-      let offSet = (new Date().getTime() - start.getTime()) / 1000 / 3600 / 24 + 1
-      return parseInt(offSet)
-    },
-    percent () {
-      return (this.days / 365 * 100).toFixed(1)
+      userInfo: {}
     }
   },
   created () {
-    wx.getSetting({
-      success: function (res) {
-        if (res.authSetting['scope.userInfo']) {
-          // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-          wx.getUserInfo({
-            success: function (res) {
-              console.log(res)
-            }
-          })
-        }
-      }
-    })
+
   },
-  bindGetUserInfo: function (e) {
-    console.log(e.detail.userInfo)
+  methods: {
+    // 扫码
+    scanCode () {
+      wx.scanCode({
+        success: (res) => {
+          if (res.result) {
+            this.addBook(res.result)
+          }
+        }
+      })
+    },
+    async addBook (book) {
+      const res = await post('/weapp/addbook', {
+        book,
+        openid: this.userInfo.openid
+      })
+      if (res.code === 0 && res.data.title) {
+        showSuccess('添加成功')
+      }
+    },
+    // 登录
+    login () {
+      let user = wx.getStorageSync('userInfo')
+      console.log(user)
+      if (!user) {
+        qcloud.setLoginUrl(config.loginUrl)
+        qcloud.login({
+          success: userInfo => {
+            qcloud.request({
+              url: config.userUrl,
+              login: true,
+              success: res => {
+                showSuccess('登录成功')
+                wx.setStorageSync('userInfo', res.data.data)
+                this.userInfo = res.data.data
+              }
+            })
+          }
+        })
+      }
+    }
+  },
+  onShow () {
+    let userInfo = wx.getStorageSync('userInfo')
+    if (userInfo) {
+      this.userInfo = userInfo
+    }
   }
 }
 </script>
@@ -58,12 +80,12 @@ export default {
 .container{
   padding:0 30px;
   .userinfo{
-    margin-top:100px;
+    margin-top:10px;
     text-align:center;
     img{
       width: 150px;
       height:150px;
-      margin: 20px;
+      margin: 20px auto;
       border-radius: 50%;
     }
   }

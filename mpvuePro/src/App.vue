@@ -1,12 +1,5 @@
 <script>
-import {get, showSucess} from './util'
-export default {
-  async created () {
-    const res = await get('/weapp/demo')
-    console.log(res)
-    showSucess('获取成功！')
-  }
-}
+export default {}
 </script>
 <style>
 
