@@ -76,17 +76,33 @@
           </div>
         </div>
       </div>
-      <div class="md-overlay" v-show="overLayFlag" @click="closePop"></div>
+      <div class="md-overlay" v-show="overLayFlag" v-on:close="closePop"></div>
+      <modal :mdShow="mdShow" @close="closeModal">
+        <p slot="message">请先登录</p>
+        <div slot="btnGroup">
+          <a class="btn btn--m" @click="mdShow = false">关闭</a>
+        </div>
+      </modal>
+      <modal :mdShow="mdShow" @close="closeModal">
+        <p slot="message">
+          <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1304"><path d="M511.704776 959.477474c-246.876714 0-447.716928-200.840214-447.716928-447.708741 0-246.871597 200.840214-447.716928 447.716928-447.716928 246.87876 0 447.717951 200.845331 447.717951 447.716928-0.001023 246.86955-200.839191 447.708741-447.717951 447.708741z m0-850.208838c-221.941811 0-402.50726 180.564425-402.50726 402.506237s180.565449 402.492934 402.50726 402.492933 402.508283-180.551122 402.508284-402.492933S733.645564 109.268636 511.704776 109.268636z" fill="#A5DC86" p-id="1305"></path><path d="M426.658821 707.96416L242.867912 535.865547l39.994899-39.994899 143.568836 141.899824L740.549811 315.566142l39.99183 39.9949s-346.378915 352.399025-353.88282 352.403118z" fill="#A5DC86" p-id="1306"></path></svg>
+          <span>加入购物车成功</span>
+        </p>
+        <div slot="btnGroup">
+          <a class="btn btn--m" @click="mdShow = false">继续购物</a>
+          <router-link to="/cart" class="btn btn--m">查看购物车</router-link>
+        </div>
+      </modal>
       <nav-footer></nav-footer>
     </div>
 </template>
 <script>
 import './../assets/css/base.css'
 import './../assets/css/product.css'
-import './../assets/css/login.css'
 import NavHeader from 'src/components/Header.vue'
 import NavFooter from 'src/components/Footer.vue'
 import NavBread from 'src/components/Bread.vue'
+import Modal from 'src/components/Modal.vue'
 import axios from 'axios'
 export default{
   data () {
@@ -115,13 +131,15 @@ export default{
       filterBy: false,
       overLayFlag: false,
       busy: true,
-      loading: false
+      loading: false,
+      mdShow: false
     }
   },
   components: {
     NavHeader,
     NavFooter,
-    NavBread
+    NavBread,
+    Modal
   },
   methods: {
     // 获取数据
@@ -129,7 +147,7 @@ export default{
       this.loading = true
       var params = JSON.parse(JSON.stringify(this.params))
       params.sortFlag = params.sortFlag ? 1 : -1
-      axios.get('/goods', {params}).then(res => {
+      axios.get('/goods/list', {params}).then(res => {
         let data = res.data
         if (data.status === '0') {
           if (flag) {
@@ -187,10 +205,12 @@ export default{
           if (res.data.status === '0') {
             alert('success')
           } else {
-            alert(res.msg)
-            console.log(res)
+            this.mdShow = true
           }
         })
+    },
+    closeModal () {
+      this.mdShow = false
     }
   },
   created () {

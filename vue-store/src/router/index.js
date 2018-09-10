@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import GoodsList from 'views/GoodsList'
 
 Vue.use(Router)
 
@@ -9,7 +8,12 @@ export default new Router({
     {
       path: '/',
       name: 'GoodsList',
-      component: GoodsList
+      component: () => import('views/GoodsList')
+    },
+    {
+      path: '/cart',
+      name: 'Cart',
+      component: () => import('views/cart')
     }
   ]
 })

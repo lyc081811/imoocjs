@@ -11,7 +11,7 @@ Vue.use(VueLazyLoad, {
   loading: '/static/loading-svg/loading-bars.svg'
 })
 Vue.use(vueScroll)
-require('./mock.js')
+// require('./mock.js')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

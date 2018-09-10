@@ -15,9 +15,9 @@
       <div class="navbar-right-container" style="display: flex;">
         <div class="navbar-menu-container">
           <!--<a href="/" class="navbar-link">我的账户</a>-->
-          <span class="navbar-link"></span>
-          <a href="javascript:void(0)" class="navbar-link">Login</a>
-          <a href="javascript:void(0)" class="navbar-link">Logout</a>
+          <span class="navbar-link" v-if="nickName">{{nickName}}，您好</span>
+          <a href="javascript:void(0)" class="navbar-link" @click="loginModal = true" v-if="!nickName">Login</a>
+          <a href="javascript:void(0)" class="navbar-link" v-if="nickName" @click="logout">Logout</a>
           <div class="navbar-cart-container">
             <span class="navbar-cart-count"></span>
             <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -28,12 +28,96 @@
           </div>
         </div>
       </div>
+      <div class="md-modal modal-msg md-modal-transition" :class="{'md-show': loginModal}">
+        <div class="md-modal-inner">
+          <div class="md-top">
+            <div class="md-title">Login in</div>
+            <button class="md-close" @click="loginModal = false">close</button>
+          </div>
+          <div class="md-content">
+            <div class="confirm-tips">
+              <div class="error-wrap">
+                <span class="error error-show" v-show="errorTip">用户名或者密码错误</span>
+              </div>
+              <ul>
+                <li class="regi_form_input">
+                  <i class="icon IconPeople"></i>
+                  <input type="text" tabindex="1" name="loginname" v-model="userName" class="regi_login_input regi_login_input_loginname">
+                </li>
+                <li class="regi_form_input noMargin">
+                  <i class="icon IconPwd"></i>
+                  <input type="text" tabindex="2" name="password" v-model="userPwd" class="regi_login_input regi_login_input_password">
+                </li>
+              </ul>
+            </div>
+            <div class="login-wrap">
+              <a href="javascript:;" class="btn-login" @click="login">登录</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="md-overlay" v-show="loginModal"></div>
     </div>
   </header>
 </template>
 <script>
+import './../assets/css/login.css'
+import axios from 'axios'
 export default {
-  name: 'NavHeader'
+  name: 'NavHeader',
+  data () {
+    return {
+      userName: '',
+      userPwd: '',
+      nickName: '',
+      errorTip: false,
+      loginModal: false
+    }
+  },
+  created () {
+  },
+  mounted () {
+    this.chackLogin()
+  },
+  methods: {
+    login () {
+      if (!this.userName || !this.userPwd) {
+        this.errorTip = true
+        return
+      } else {
+        this.errorTip = false
+      }
+      axios.post('/users/login', {
+        userName: this.userName,
+        userPwd: this.userPwd
+      }).then(response => {
+        let res = response.data
+        if (res.status === '0') {
+          this.errorTip = false
+          this.loginModal = false
+          this.nickName = res.result.userName
+        } else {
+          this.errorTip = true
+        }
+      })
+    },
+    logout () {
+      axios.post('/users/logout').then(response => {
+        let res = response.data
+        if (res.status === '0') {
+          this.nickName = ''
+        }
+      })
+    },
+    chackLogin () {
+      axios.get('/users/checkLogin').then(response => {
+        let res = response.data
+        if (res.status === '0') {
+          this.nickName = res.result
+        }
+      })
+    }
+  }
 }
 </script>
 <style scoped>

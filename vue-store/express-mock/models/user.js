@@ -1,5 +1,5 @@
 var mongoose = require('mongoose')
-var userSchema = mongoose.Schema({
+var userSchema = new mongoose.Schema({
   userId: String,
   userName: String,
   userPwd: String,
