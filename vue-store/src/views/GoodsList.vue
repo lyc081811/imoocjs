@@ -77,10 +77,10 @@
         </div>
       </div>
       <div class="md-overlay" v-show="overLayFlag" v-on:close="closePop"></div>
-      <modal :mdShow="mdShow" @close="closeModal">
+      <modal :mdShow="mdShowErr" @close="closeModal">
         <p slot="message">请先登录</p>
         <div slot="btnGroup">
-          <a class="btn btn--m" @click="mdShow = false">关闭</a>
+          <a class="btn btn--m" @click="mdShowErr = false">关闭</a>
         </div>
       </modal>
       <modal :mdShow="mdShow" @close="closeModal">
@@ -132,6 +132,7 @@ export default{
       overLayFlag: false,
       busy: true,
       loading: false,
+      mdShowErr: false,
       mdShow: false
     }
   },
@@ -203,9 +204,10 @@ export default{
       axios.post('/goods/addCart', {productId})
         .then(res => {
           if (res.data.status === '0') {
-            alert('success')
-          } else {
+            // alert('success')
             this.mdShow = true
+          } else {
+            this.mdShowErr = true
           }
         })
     },

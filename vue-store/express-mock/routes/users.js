@@ -63,4 +63,111 @@ router.get('/checkLogin', function (req, res, next) {
     })
   }
 })
+// 购物车列表
+router.get('/cart', function (req, res, next) {
+  var userId = req.cookies.userId
+  User.findOne({userId}, function (err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      if (doc) {
+        res.json({
+          status: '0',
+          msg: '',
+          result: doc.cartList
+        })
+      }
+    }
+  })
+})
+
+// 购物车删除
+router.post('/cart/del', function (req, res, next) {
+  var userId = req.cookies.userId
+  var productId = req.body.productId
+  User.update({userId}, {$pull: {'cartList': {productId}}}, function (err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      res.json({
+        status: '0',
+        msg: '',
+        result: 'success'
+      })
+    }
+  })
+})
+
+// 修改购物车数据
+router.post('/cart/edit', function (req, res, next) {
+  var userId = req.cookies.userId
+  var productId = req.body.productId
+  var productNum = req.body.productNum
+  var checked = req.body.checked
+  User.update({userId, 'cartList.productId': productId}, {'cartList.$.productNum': productNum, 'cartList.$.checked': checked}, function (err, doc) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      res.json({
+        status: '0',
+        msg: '',
+        result: 'success'
+      })
+    }
+  })
+})
+
+// 编辑全选toogle
+router.post('/cart/checkToogle', function (req, res, next) {
+  var userId = req.cookies.userId
+  var checkAllFlag = req.cookies.checkAllFlag ? '1' : '0'
+  User.findOne({userId}, function (err, user) {
+    if (err) {
+      res.json({
+        status: '1',
+        msg: err.message,
+        result: ''
+      })
+    } else {
+      if (user) {
+        user.cartList.forEach(x => {
+          x.checked = checkAllFlag
+        })
+        user.save(function (err1, doc) {
+          if (err1) {
+            res.json({
+              status: '1',
+              msg: err1.message,
+              result: ''
+            })
+          } else {
+            res.json({
+              status: '0',
+              msg: '',
+              result: 'success'
+            })
+          }
+        })
+      }
+      res.json({
+        status: '0',
+        msg: '',
+        result: 'success'
+      })
+    }
+  })
+})
+
 module.exports = router

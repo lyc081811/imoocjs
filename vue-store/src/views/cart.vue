@@ -59,42 +59,42 @@
               </ul>
             </div>
             <ul class="cart-item-list">
-              <li>
+              <li v-for="item in cartList" :key="item.productId">
                 <div class="cart-tab-1">
                   <div class="cart-item-check">
-                    <a href="javascipt:;" class="checkbox-btn item-check-btn">
+                    <a href="javascipt:;" class="checkbox-btn item-check-btn" :class="{'check': item.checked === '1'}" @click="edit('2', item)">
                       <svg class="icon icon-ok">
                         <use xlink:href="#icon-ok"></use>
                       </svg>
                     </a>
                   </div>
                   <div class="cart-item-pic">
-                    <img src="/static/1.jpg">
+                    <img :src="'/static/' + item.productImage" :alt="item.productName">
                   </div>
                   <div class="cart-item-title">
-                    <div class="item-name">XX</div>
+                    <div class="item-name">{{item.productName}}</div>
                   </div>
                 </div>
                 <div class="cart-tab-2">
-                  <div class="item-price">1000</div>
+                  <div class="item-price">{{item.salePrice}}</div>
                 </div>
                 <div class="cart-tab-3">
                   <div class="item-quantity">
                     <div class="select-self select-self-open">
                       <div class="select-self-area">
-                        <a class="input-sub">-</a>
-                        <span class="select-ipt">10</span>
-                        <a class="input-add">+</a>
+                        <a class="input-sub" @click="edit('0', item)">-</a>
+                        <span class="select-ipt">{{item.productNum}}</span>
+                        <a class="input-add"  @click="edit('1', item)">+</a>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="cart-tab-4">
-                  <div class="item-price-total">100</div>
+                  <div class="item-price-total">{{item.salePrice * item.productNum}}</div>
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
-                    <a href="javascript:;" class="item-edit-btn">
+                    <a href="javascript:;" class="item-edit-btn" @click="delCartFirm(item.productId)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -109,8 +109,8 @@
           <div class="cart-foot-inner">
             <div class="cart-foot-l">
               <div class="item-all-check">
-                <a href="javascipt:;">
-                  <span class="checkbox-btn item-check-btn">
+                <a href="javascipt:;" @click="toggleAll">
+                  <span class="checkbox-btn item-check-btn" :class="{'check': checkAllFlag}">
                       <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
                   </span>
                   <span>Select all</span>
@@ -129,6 +129,13 @@
         </div>
       </div>
     </div>
+    <modal :mdShow="mdShow" @close="closeModal">
+      <p slot="message">你确定要删除此商品吗？</p>
+      <div slot="btnGroup">
+        <a class="btn btn--m" @click="delCartModal">确认</a>
+        <a class="btn btn--m" @click="mdShow = false">关闭</a>
+      </div>
+    </modal>
     <nav-footer></nav-footer>
   </div>
 </template>
@@ -147,6 +154,10 @@
   .item-quantity .select-self-area{
     background:none;
     border: 1px solid #f0f0f0;
+    -webkit-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
   }
   .item-quantity .select-self-area .select-ipt{
     display: inline-block;
@@ -164,7 +175,7 @@ import NavHeader from 'src/components/Header.vue'
 import NavFooter from 'src/components/Footer.vue'
 import NavBread from 'src/components/Bread.vue'
 import Modal from 'src/components/Modal.vue'
-// import axios from 'axios'
+import axios from 'axios'
 export default{
   name: 'Cart',
   components: {
@@ -174,7 +185,81 @@ export default{
     Modal
   },
   data () {
-    return {}
+    return {
+      cartList: [],
+      mdShow: false,
+      productId: ''
+    }
+  },
+  created () {
+    this.init()
+  },
+  computed: {
+    checkAllFlag () {
+      return this.checkCount === this.cartList.length
+    },
+    checkCount () {
+      let i = 0
+      this.cartList.forEach(x => {
+        if (x.checked === '1') {
+          i++
+        }
+      })
+      return i
+    }
+  },
+  methods: {
+    init () {
+      axios.get('/users/cart').then(response => {
+        let res = response.data
+        this.cartList = res.result
+      })
+    },
+    delCartFirm (id) {
+      this.productId = id
+      this.mdShow = true
+    },
+    delCartModal () {
+      axios.post('/users/cart/del', {
+        productId: this.productId
+      }).then(res => {
+        this.mdShow = false
+        this.init()
+      })
+    },
+    closeModal () {
+      this.mdShow = false
+    },
+    edit (flag, item) {
+      if (flag === '1') {
+        item.productNum++
+      } else if (flag === '0') {
+        if (item.productNum > 1) {
+          item.productNum--
+        }
+      } else if (flag === '2') {
+        item.checked = item.checked === '1' ? '0' : '1'
+      }
+      axios.post('/users/cart/edit', {
+        productId: item.productId,
+        productNum: item.productNum,
+        checked: item.checked
+      }).then(res => {
+        console.log(res.data.result)
+      })
+    },
+    toggleAll () {
+      var flag = !this.checkAllFlag
+      this.cartList.forEach(x => {
+        x.checked = flag ? '1' : '0'
+      })
+      axios.post('/users/cart/checkToogle', {checkAllFlag: flag}).then(response => {
+        let res = response.data
+        if (res.status === '0') {
+          console.log(res.result)
+        }
+      })
+    }
   }
 }
 </script>
