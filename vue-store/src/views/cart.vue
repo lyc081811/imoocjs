@@ -2,8 +2,8 @@
   <div>
     <nav-header></nav-header>
     <nav-bread>
-        <span slot="bread">cart</span>
-      </nav-bread>
+      <span slot="bread">cart</span>
+    </nav-bread>
     <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1"
          xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
@@ -62,7 +62,7 @@
               <li v-for="item in cartList" :key="item.productId">
                 <div class="cart-tab-1">
                   <div class="cart-item-check">
-                    <a href="javascipt:;" class="checkbox-btn item-check-btn" :class="{'check': item.checked === '1'}" @click="edit('2', item)">
+                    <a class="checkbox-btn item-check-btn" :class="{'check': item.checked === '1'}" @click="edit('2', item)">
                       <svg class="icon icon-ok">
                         <use xlink:href="#icon-ok"></use>
                       </svg>
@@ -76,7 +76,7 @@
                   </div>
                 </div>
                 <div class="cart-tab-2">
-                  <div class="item-price">{{item.salePrice}}</div>
+                  <div class="item-price">{{item.salePrice | currency('￥')}}</div>
                 </div>
                 <div class="cart-tab-3">
                   <div class="item-quantity">
@@ -90,11 +90,11 @@
                   </div>
                 </div>
                 <div class="cart-tab-4">
-                  <div class="item-price-total">{{item.salePrice * item.productNum}}</div>
+                  <div class="item-price-total">{{item.salePrice * item.productNum  | currency('￥')}}</div>
                 </div>
                 <div class="cart-tab-5">
                   <div class="cart-item-opration">
-                    <a href="javascript:;" class="item-edit-btn" @click="delCartFirm(item.productId)">
+                    <a class="item-edit-btn" @click="delCartFirm(item.productId)">
                       <svg class="icon icon-del">
                         <use xlink:href="#icon-del"></use>
                       </svg>
@@ -109,7 +109,7 @@
           <div class="cart-foot-inner">
             <div class="cart-foot-l">
               <div class="item-all-check">
-                <a href="javascipt:;" @click="toggleAll">
+                <a  @click="toggleAll">
                   <span class="checkbox-btn item-check-btn" :class="{'check': checkAllFlag}">
                       <svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
                   </span>
@@ -119,10 +119,10 @@
             </div>
             <div class="cart-foot-r">
               <div class="item-total">
-                Item total: <span class="total-price">500</span>
+                Item total: <span class="total-price">{{totalPrice | currency('￥')}}</span>
               </div>
               <div class="btn-wrap">
-                <a class="btn btn--red">Checkout</a>
+                <a class="btn btn--red" :class="{'btn--dis': !checkCount}" @click="checkOut">Checkout</a>
               </div>
             </div>
           </div>
@@ -169,13 +169,12 @@
 </style>
 <script>
 import './../assets/css/checkout.css'
-import './../assets/css/base.css'
-import './../assets/css/product.css'
 import NavHeader from 'src/components/Header.vue'
 import NavFooter from 'src/components/Footer.vue'
 import NavBread from 'src/components/Bread.vue'
 import Modal from 'src/components/Modal.vue'
 import axios from 'axios'
+// import {currency} from '../util/currency'
 export default{
   name: 'Cart',
   components: {
@@ -191,6 +190,9 @@ export default{
       productId: ''
     }
   },
+  // filters: {
+  //   currency
+  // },
   created () {
     this.init()
   },
@@ -206,6 +208,15 @@ export default{
         }
       })
       return i
+    },
+    totalPrice () {
+      let count = 0
+      this.cartList.forEach(x => {
+        if (x.checked === '1') {
+          count += x.salePrice * x.productNum
+        }
+      })
+      return count
     }
   },
   methods: {
@@ -259,6 +270,13 @@ export default{
           console.log(res.result)
         }
       })
+    },
+    checkOut () {
+      if (this.checkCount > 0) {
+        this.$router.push({
+          path: '/address'
+        })
+      }
     }
   }
 }

@@ -14,6 +14,21 @@ export default new Router({
       path: '/cart',
       name: 'Cart',
       component: () => import('views/cart')
+    },
+    {
+      path: '/address',
+      name: 'Address',
+      component: () => import('views/address')
+    },
+    {
+      path: '/orderConfirm',
+      name: 'OderConfirm',
+      component: () => import('views/orderConfirm')
+    },
+    {
+      path: '/orderSuccess',
+      name: 'OrderSuccess',
+      component: () => import('views/orderSuccess')
     }
   ]
 })

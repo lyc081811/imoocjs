@@ -18,9 +18,9 @@ var userSchema = new mongoose.Schema({
     addressId: String,
     userName: String,
     streetName: String,
-    postCode: String,
-    tel: String,
-    isDefault: String
+    postCode: Number,
+    tel: Number,
+    isDefault: Boolean
   }]
 })
 module.exports = mongoose.model('user', userSchema)

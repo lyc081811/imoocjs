@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>vuex</title>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <script src="../node_modules/vuex/dist/vuex.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <p data="num">{{msg}}</p>
+    <span>{{$store.state.count}}</span>
+    <button @click="add">add</button>
+    <hr>
+    <counter></counter>
+  </div>
+  <script>
+    const store = new Vuex.Store({
+      state: {
+        count: 0
+      },
+      getters: {
+        num (state) {
+          return ++state.count
+        }
+      },
+      mutations: {
+        addNum (state, num) {
+          state.count += num
+        }
+      },
+      actions: {
+        addNumA (context, num) {
+          context.commit('addNum', num)
+        }
+      }
+    })
+
+    const counter = {
+      template: `<div> {{count}} </div>`,
+      computed: {
+        count () {
+          return this.$store.state.count
+        },
+        num () {
+          return this.$store.getters.num
+        }
+      }
+    }
+    new Vue({
+      el: '#app',
+      store,
+      data: {
+        msg: 'vuex - msg'
+      },
+      components: {
+        counter
+      },
+      methods: {
+        add () {
+          // this.$store.commit('addNum', 10)
+          this.$store.dispatch('addNumA', 5)
+        }
+      }
+    })
+  </script>
+</body>
+</html>

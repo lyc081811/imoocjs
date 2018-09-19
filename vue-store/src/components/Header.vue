@@ -63,22 +63,27 @@
 <script>
 import './../assets/css/login.css'
 import axios from 'axios'
+import {mapState} from 'vuex'
 export default {
   name: 'NavHeader',
   data () {
     return {
       userName: '',
       userPwd: '',
-      nickName: '',
       errorTip: false,
       loginModal: false
     }
   },
   created () {
-  },
-  mounted () {
     this.chackLogin()
   },
+  // computed: {
+  //   // nickName () {
+  //   //   return this.$store.state.nickName
+  //   // }
+  //   ...mapState(['nickname'])
+  // },
+  computed: mapState(['nickName']),
   methods: {
     login () {
       if (!this.userName || !this.userPwd) {
@@ -113,7 +118,7 @@ export default {
       axios.get('/users/checkLogin').then(response => {
         let res = response.data
         if (res.status === '0') {
-          this.nickName = res.result
+          this.$store.commit('updateInfo', res.result)
         }
       })
     }
