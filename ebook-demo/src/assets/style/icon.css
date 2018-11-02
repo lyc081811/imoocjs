@@ -1,17 +1,17 @@
 @font-face {
-  font-family: 'book-icon';
-  src:  url('fonts/book-icon.eot?ny0eod');
-  src:  url('fonts/book-icon.eot?ny0eod#iefix') format('embedded-opentype'),
-    url('fonts/book-icon.ttf?ny0eod') format('truetype'),
-    url('fonts/book-icon.woff?ny0eod') format('woff'),
-    url('fonts/book-icon.svg?ny0eod#book-icon') format('svg');
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?es3q8w');
+  src:  url('fonts/icomoon.eot?es3q8w#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?es3q8w') format('truetype'),
+    url('fonts/icomoon.woff?es3q8w') format('woff'),
+    url('fonts/icomoon.svg?es3q8w#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'book-icon' !important;
+  font-family: 'icomoon' !important;
   speak: none;
   font-style: normal;
   font-weight: normal;
@@ -32,6 +32,7 @@
 }
 .icon-cart:before {
   content: "\e902";
+  color: #666;
 }
 .icon-menu:before {
   content: "\e903";
