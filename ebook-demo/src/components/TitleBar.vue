@@ -1,22 +1,22 @@
 <template>
   <transition name="slide-down">
     <div class="title-wrapper" v-show="isShow">
-        <div class="left">
-            <span class="icon icon-back"></span>
+      <div class="left">
+        <span class="icon icon-back"></span>
+      </div>
+      <div class="right">
+        <div class="icon-wrapper">
+          <span class="icon icon-cart"></span>
         </div>
-        <div class="right">
-            <div class="icon-wrapper">
-                <span class="icon icon-cart"></span>
-            </div>
-            <div class="icon-wrapper">
-                <span class="icon icon-person"></span>
-            </div>
-            <div class="icon-wrapper">
-                <span class="icon icon-more"></span>
-            </div>
+        <div class="icon-wrapper">
+          <span class="icon icon-person"></span>
         </div>
+        <div class="icon-wrapper">
+          <span class="icon icon-more"></span>
+        </div>
+      </div>
     </div>
-</transition>
+  </transition>
 </template>
 <script>
 export default {

@@ -40,7 +40,7 @@ co(function *(){
     console.log(data.name)
 })
 
-// 4. async同一世界
+// 4. async统一世界
 const readAsync = util.promisify(fs.readFile)
 async function init() {
     let data = await readAsync('./package.json')
